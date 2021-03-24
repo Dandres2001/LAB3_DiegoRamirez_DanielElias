@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Lab2_DiegoRamirez_DanielElias.Models.Drug>
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>View</h1>
+<form method="get" asp-action="dotnetList">
+    <p>
+        <input type="search" placeholder="Type name, last name, salary, or club..." value="@ViewData["GetPlayer"]" name="searched" style="width:500px;" />
+        <input type="submit" value="Search" class="btn btn-outline-primary" />
+        <a asp-action="dotnetList">Show All</a>
+    </p>Get
+
+</form>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>

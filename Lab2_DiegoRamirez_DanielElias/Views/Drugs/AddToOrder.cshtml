@@ -1,0 +1,61 @@
+﻿@model Lab2_DiegoRamirez_DanielElias.Models.Drug
+
+@{
+    ViewData["Title"] = "AddToOrder";
+}
+
+<h1>AddToOrder</h1>
+
+<div>
+    <h4>Drug</h4>
+    <hr />
+    <dl class="row">
+       
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+   
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Stock)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Stock)
+        </dd>
+    </dl>
+</div>
+
+<form asp-action="AddToOrder">
+
+    <div>
+        <div class="form-group">
+            <label asp-for="OrderedQuantity" class="control-label"></label>
+            <input asp-for="OrderedQuantity" class="form-control" />
+            <span asp-validation-for="OrderedQuantity" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Add" class="btn btn-primary" />
+        </div>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+        <div>
+            <a asp-action="FinalOrder">Go To Final Order</a>
+        </div>
+    </div>
+</form>
+
+@if(null != TempData["alertMessage"])
+   {
+<script type="text/javascript">
+       alert("@TempData["alertMessage"]");
+</script>
+   }
+

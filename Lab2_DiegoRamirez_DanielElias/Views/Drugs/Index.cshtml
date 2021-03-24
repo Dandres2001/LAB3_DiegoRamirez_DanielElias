@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Lab2_DiegoRamirez_DanielElias.Models.Drug>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<div>
+<p>
+    <a asp-action="Getpreorder">Download preorder</a>
+</p>
+    </div>
+<div>
+    <p>
+        <a asp-action="Getinorder">Download inorder</a>
+    </p>
+</div>
+<div>
+    <p>
+        <a asp-action="Getpostorder">Download postorder</a>
+    </p>
+</div>
+
+<div class="form-group">
+<input type="submit" value=" Upload csv"onclick="location.href='@Url.Action("ReadFile", "Drugs")'" class="btn btn-outline-primary" />
+    </div>
+<div class="form-group">
+    <input type="submit" value=" Search drug" onclick="location.href='@Url.Action("Search", "Drugs")'" class="btn btn-outline-primary" />
+</div>
+<div class="form-group">
+    <input type="submit" value="Restock pharmacy" onclick="location.href='@Url.Action("ReStock", "Drugs")'" class="btn btn-outline-primary" />
+</div>
+<div class="form-group">
+    <input type="submit" value="Go to final order" onclick="location.href='@Url.Action("FinalOrder", "Drugs")'" class="btn btn-outline-primary" />
+</div>
+
+
+
+    @if (null != TempData["alertMessage"])
+    {
+        <script type="text/javascript">
+       alert("@TempData["alertMessage"]");
+        </script>
+    }
