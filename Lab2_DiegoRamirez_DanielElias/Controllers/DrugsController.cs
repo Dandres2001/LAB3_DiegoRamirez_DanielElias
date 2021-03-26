@@ -51,8 +51,8 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
             var newDrug3 = new Models.Drug();
 
             newDrug3.Name = search;
-  
-                selected = Singleton.Instance.DrugsList.ElementAt(Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.root).Data.ID);
+
+                selected = Singleton.Instance.DrugsList.ElementAt(Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.Head).Value.ID);
 
 
                 return View(selected);
@@ -83,7 +83,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
               
 
                 int quantity = Convert.ToInt32(collection["OrderedQuantity"]);
-                selected = Singleton.Instance.DrugsList.ElementAt(Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.root).Data.ID);
+                selected = Singleton.Instance.DrugsList.ElementAt(Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.Head).Value.ID);
                 selected.OrderedQuantity = quantity;
 
                 if ((selected.OrderedQuantity <= selected.Stock)&& quantity != 0)
@@ -93,7 +93,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
                     Drugadded();
                     if (selected.Stock == 0)
                     {
-                        Singleton.Instance.Drugindex.remove(Singleton.Instance.Drugindex.root, newDrug3);
+                        Singleton.Instance.Drugindex.Remove(newDrug3);
                         remove();
                     }
                 }
@@ -237,9 +237,9 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
                             object obj = newDrug2;
 
                             Singleton.Instance.DrugsList.AddLast(newDrug);
-                            Singleton.Instance.Drugindex.insert(newDrug2);
-                      
-                  
+                            Singleton.Instance.Drugindex.Add(newDrug2);
+
+
                         }
                         catch
                         {
@@ -272,7 +272,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
                     newDrug.ID = Singleton.Instance.DrugsList.ElementAt(i).ID-1;
                     newDrug.Name = Singleton.Instance.DrugsList.ElementAt(i).Name;
                     drug.Stock = random.Next(1, 15);
-                    Singleton.Instance.Drugindex.insert(newDrug);
+                    Singleton.Instance.Drugindex.Add(newDrug);
                     Restocked();
                 }
 
@@ -284,22 +284,22 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
 
         public ActionResult Getpreorder()
         {
-
-            preorder(Singleton.Instance.Drugindex.root);
+            preorder(Singleton.Instance.Drugindex.Head);
             return File(Encoding.UTF8.GetBytes(preorderinfo), "text/csv", "PreOrder.txt");
 
         }
         public ActionResult Getinorder()
         {
 
-            inorder(Singleton.Instance.Drugindex.root);
+
+            inorder(Singleton.Instance.Drugindex.Head);
             return File(Encoding.UTF8.GetBytes(inorderinfo), "text/csv", "InOrder.txt");
 
         }
         public ActionResult Getpostorder()
         {
 
-            postorder(Singleton.Instance.Drugindex.root);
+            postorder(Singleton.Instance.Drugindex.Head);
             return File(Encoding.UTF8.GetBytes(posorderinfo), "text/csv", "PostOrder.txt");
 
         }
@@ -342,44 +342,43 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
             }
 
         }
-        public void preorder(Nodetree<Drug> parent)
+        public void preorder(AVLTreeNode<Drug> parentt)
         {
-            if (parent != null)
+            if (parentt != null)
             {
 
 
-                preorderinfo += "Index: "+ parent.Data.ID+" product: "+ parent.Data.Name + "\n";
-                preorder(parent.leftnode);
-                preorder(parent.rightnode);
+                preorderinfo += "Index: " + parentt.Value.ID + " product: " + parentt.Value.Name + "\n";
+                preorder(parentt.Left);
+                preorder(parentt.Right);
             }
 
 
         }
-        public void inorder(Nodetree<Drug> parent)
+        public void inorder(AVLTreeNode<Drug> parentt)
         {
-            if (parent != null)
+            if (parentt != null)
             {
-                inorder(parent.leftnode );
-                inorderinfo += "Index: " + parent.Data.ID + " product: " + parent.Data.Name + "\n";
-                inorder(parent.rightnode);
+                inorder(parentt.Left);
+                inorderinfo += "Index: " + parentt.Value.ID + " product: " + parentt.Value.Name + "\n";
+                inorder(parentt.Right);
             }
-         
-        }
-        public void postorder(Nodetree<Drug> parent)
-        {
-            if (parent != null)
-            {
-
-                postorder(parent.leftnode);
-                postorder(parent.rightnode);
-
-                posorderinfo += "Index: " + parent.Data.ID + " product: " + parent.Data.Name + "\n";
-
-            }
-          
 
         }
+        public void postorder(AVLTreeNode<Drug> parentt)
+        {
+            if (parentt != null)
+            {
 
+                postorder(parentt.Left);
+                postorder(parentt.Right);
+
+                posorderinfo += "Index: " + parentt.Value.ID + " product: " + parentt.Value.Name + "\n";
+
+            }
+
+
+        }
 
     }
 }
