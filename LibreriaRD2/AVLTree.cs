@@ -6,44 +6,44 @@ namespace LibreriaRD2
 {
 
 
-        public class AVLTree<T> where T : IComparable
+    public class AVLTree<T> where T : IComparable
         {
-            public AVLTreeNode<T> Head { get; internal set; }
+            public AVLTreeNode<T> Root { get; internal set; }
 
             #region Add items
-
-            public void Add(T input)
+    
+            public void Add(T value)
             {
-                AddTo(input, Head);
+                AddTo(value, Root);
             }
 
-            private void AddTo(T input, AVLTreeNode<T> current)
+            private void AddTo(T value, AVLTreeNode<T> current)
             {
-                if (Head == null)
+                if (Root == null)
                 {
-                    Head = new AVLTreeNode<T>(input, null, this);
+                    Root = new AVLTreeNode<T>(value, null, this);
                     return;
                 }
-                if (input.CompareTo(current.Value) < 0)
+                if (current.CompareTo(value) < 0)
                 {
                     if (current.Left == null)
                     {
-                        current.Left = new AVLTreeNode<T>(input, current, this);
+                        current.Left = new AVLTreeNode<T>(value, current, this);
                     }
                     else
                     {
-                        AddTo(input, current.Left);
+                        AddTo(value, current.Left);
                     }
                 }
                 else
                 {
                     if (current.Right == null)
                     {
-                        current.Right = new AVLTreeNode<T>(input, current, this);
+                        current.Right = new AVLTreeNode<T>(value, current, this);
                     }
                     else
                     {
-                        AddTo(input, current.Right);
+                        AddTo(value, current.Right);
                     }
                 }
 
@@ -61,11 +61,11 @@ namespace LibreriaRD2
             }
             #endregion
             #region Remove
-            public bool Remove(T input)
+            public bool Remove(T value)
             {
-                AVLTreeNode<T> current, parent;
+                AVLTreeNode<T> current, parent = Root ;
 
-                current = FindWithParent(input, out parent);
+                current = find(value, parent);
 
                 bool removeSucessfull = RemoveNode(current);
 
@@ -95,20 +95,20 @@ namespace LibreriaRD2
                 var parent = current.Parent;
                 //Case: no right child
 
-                if (current == Head)
+                if (current == Root)
                 {
-                    Head = null;
+                    Root = null;
                 }
                 if (current.Right == null)
                 {
                     if (parent == null)
                     {
-                        Head = current.Left;
+                        Root = current.Left;
                     }
                     else
                     {
-                        int compare = parent.Value.CompareTo(current.Value);
-                        if (compare > 0)
+                        int compare = parent.Data.CompareTo(current.Data);
+                        if (compare < 0)
                         {
                             parent.Left = current.Left;
                         }
@@ -125,12 +125,12 @@ namespace LibreriaRD2
 
                     if (parent == null)
                     {
-                        Head = current.Right;
+                        Root = current.Right;
                     }
                     else
                     {
-                        int compare = parent.Value.CompareTo(current.Value);
-                        if (compare > 0)
+                        int compare = parent.Data.CompareTo(current.Data);
+                        if (compare < 0)
                         {
                             parent.Left = current.Right;
                         }
@@ -157,12 +157,12 @@ namespace LibreriaRD2
 
                     if (parent == null)
                     {
-                        Head = leftMost;
+                        Root = leftMost;
                     }
                     else
                     {
-                        int compare = parent.Value.CompareTo(current.Value);
-                        if (compare > 0)
+                        int compare = parent.Data.CompareTo(current.Data);
+                        if (compare < 0)
                         {
                             parent.Left = leftMost;
                         }
@@ -176,37 +176,17 @@ namespace LibreriaRD2
             }
             #endregion
             #region Search
-            public bool Search(T input)
-            {
-                return SearchNode(input, Head);
-            }
-            private bool SearchNode(T input, AVLTreeNode<T> current)
-            {
-                if (current == null)
-                {
-                    return false;
-                }
-
-                if (input.CompareTo(current.Value) == 0)
-                {
-                    return true;
-                }
-
-                return SearchNode(input,
-                    input.CompareTo(current.Value) < 0
-                        ? current.Left
-                        : current.Right);
-            }
+          
             public AVLTreeNode<T> find(T value, AVLTreeNode<T> parent)
             {
 
                 if (parent != null)
                 {
-                    if (parent.Value.CompareTo(value) == 0)
+                    if (parent.Data.CompareTo(value) == 0)
                     {
                         return parent;
                     }
-                    if (parent.Value.CompareTo(value) < 0)
+                    else if (parent.Data.CompareTo(value) < 0)
                     {
                         return find(value, parent.Left);
                     }
@@ -218,24 +198,24 @@ namespace LibreriaRD2
                 return null;
             }
 
-            private AVLTreeNode<T> FindWithParent(T input, out AVLTreeNode<T> parent)
+            private AVLTreeNode<T> FindByParent(T value, out AVLTreeNode<T> parent)
             {
-                AVLTreeNode<T> current = Head;
+                AVLTreeNode<T> current = Root;
                 parent = null;
 
                 while (current != null)
                 {
-                    int compare = current.Value.CompareTo(input);
+                    //int compare = current.Data.CompareTo(value);
 
-                    if (compare > 0)
-                    {
-                        parent = current;
-                        current = current.Left;
-                    }
-                    else if (compare < 0)
+                    if (current.CompareTo(value) > 0)
                     {
                         parent = current;
                         current = current.Right;
+                    }
+                    else if (current.CompareTo(value) < 0)
+                    {
+                        parent = current;
+                        current = current.Left;
                     }
                     else
                     {
@@ -245,11 +225,52 @@ namespace LibreriaRD2
 
                 return null;
             }
-            #endregion
+        #endregion
 
+        public AVLTreeNode<T> remove(AVLTreeNode<T> parent, T key)
+        {
+            if (parent == null) { return parent; }
 
+            if (parent.Data.CompareTo(key) < 0)
+            {
+                parent.Left = remove(parent.Left, key);
+
+            }
+            else if (parent.Data.CompareTo(key) > 0)
+            {
+                parent.Right = remove(parent.Right, key);
+            }
+            else
+            {
+                if (parent.Left == null)
+                {
+                    return parent.Right;
+                }
+                else if (parent.Right == null)
+                {
+                    return parent.Left;
+                }
+                parent.Data = minvalue(parent.Right);
+                parent.Right = remove(parent.Right, parent.Data);
+            }
+            return parent;
 
         }
+        private T minvalue(AVLTreeNode<T> node)
+        {
+            T minv = node.Data;
+            while (node.Left != null)
+            {
+                minv = node.Left.Data;
+                node = node.Left;
+            }
+            return minv;
+        }
+
 
     }
+
+
+
+}
 
