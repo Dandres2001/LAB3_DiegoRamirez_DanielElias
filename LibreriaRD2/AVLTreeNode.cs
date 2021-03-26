@@ -7,6 +7,8 @@ namespace LibreriaRD2
 
     public class AVLTreeNode<T> where T : IComparable
     {
+ 
+
 
         private AVLTreeNode<T> _left;
         private AVLTreeNode<T> _right;
@@ -14,16 +16,18 @@ namespace LibreriaRD2
 
         public AVLTreeNode(T value, AVLTreeNode<T> parent, AVLTree<T> tree)
         {
-            Value = value;
+            Data = value;
             Parent = parent;
             _tree = tree;
         }
-        public T Value { get; set; }
+
+    
+        public T Data { get; set; }
 
         public AVLTreeNode<T> Left
         {
             get { return _left; }
-            internal set
+            set
             {
                 _left = value;
                 if (_left != null)
@@ -35,7 +39,7 @@ namespace LibreriaRD2
         public AVLTreeNode<T> Right
         {
             get { return _right; }
-            internal set
+            set
             {
                 _right = value;
                 if (_right != null)
@@ -44,11 +48,11 @@ namespace LibreriaRD2
                 }
             }
         }
-        public AVLTreeNode<T> Parent { get; internal set; }
+        public AVLTreeNode<T> Parent { get; set; }
 
         public int CompareTo(T other)
         {
-            return Value.CompareTo(other);
+            return Data.CompareTo(other);
         }
 
         internal void Balance()
@@ -84,58 +88,58 @@ namespace LibreriaRD2
         {
             AVLTreeNode<T> rootParent = Parent;
             AVLTreeNode<T> root = this;
-            AVLTreeNode<T> pivot = Right;
+            AVLTreeNode<T> temp = Right;
 
             bool isLeftChild = (rootParent != null) && rootParent.Left == root;
-            root.Right = pivot.Left;
-            pivot.Left = root;
+            root.Right = temp.Left;
+            temp.Left = root;
 
-            root.Parent = pivot;
-            pivot.Parent = rootParent;
+            root.Parent = temp;
+            temp.Parent = rootParent;
 
             if (root.Right != null)
                 root.Right.Parent = root;
 
-            if (_tree.Head == root)
+            if (_tree.Root == root)
             {
-                _tree.Head = pivot;
+                _tree.Root = temp;
             }
             else if (isLeftChild)
             {
-                rootParent.Left = pivot;
+                rootParent.Left = temp;
             }
             else if (rootParent != null)
             {
-                rootParent.Right = pivot;
+                rootParent.Right = temp;
             }
         }
         private void RightRotation()
         {
             AVLTreeNode<T> rootParent = Parent;
             AVLTreeNode<T> root = this;
-            AVLTreeNode<T> pivot = Left;
+            AVLTreeNode<T> temp = Left;
             bool isLeftChild = (rootParent != null) && rootParent.Left == root;
 
-            root.Left = pivot.Right;
-            pivot.Right = root;
+            root.Left = temp.Right;
+            temp.Right = root;
 
-            root.Parent = pivot;
-            pivot.Parent = rootParent;
+            root.Parent = temp;
+            temp.Parent = rootParent;
 
             if (root.Left != null)
                 root.Left.Parent = root;
 
-            if (_tree.Head == root)
+            if (_tree.Root == root)
             {
-                _tree.Head = pivot;
+                _tree.Root = temp;
             }
             else if (isLeftChild)
             {
-                rootParent.Left = pivot;
+                rootParent.Left = temp;
             }
             else if (rootParent != null)
             {
-                rootParent.Right = pivot;
+                rootParent.Right = temp;
             }
         }
         private void LeftRightRotation()
@@ -148,16 +152,16 @@ namespace LibreriaRD2
             Left.LeftRotation();
             RightRotation();
         }
-        private int MaxChildrenHeight(AVLTreeNode<T> node)
+        private int MaxHeight(AVLTreeNode<T> node)
         {
             if (node != null)
             {
-                return 1 + Math.Max(MaxChildrenHeight(node.Left), MaxChildrenHeight(node.Right));
+                return 1 + Math.Max(MaxHeight(node.Left), MaxHeight(node.Right));
             }
             return 0;
         }
-        private int LeftHeight { get { return MaxChildrenHeight(Left); } }
-        private int RightHeight { get { return MaxChildrenHeight(Right); } }
+        private int LeftHeight { get { return MaxHeight(Left); } }
+        private int RightHeight { get { return MaxHeight(Right); } }
         public TreeState State
         {
             get

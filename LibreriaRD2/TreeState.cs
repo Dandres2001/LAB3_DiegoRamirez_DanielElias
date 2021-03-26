@@ -8,6 +8,7 @@ namespace LibreriaRD2
     {
         LeftHeavy,
         RightHeavy,
-        Balanced
+        Balanced,
+   
     }
 }
