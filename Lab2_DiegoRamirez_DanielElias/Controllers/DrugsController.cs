@@ -52,7 +52,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
 
             newDrug3.Name = search;
 
-                selected = Singleton.Instance.DrugsList.ElementAt(Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.Head).Value.ID);
+                selected = Singleton.Instance.DrugsList.ElementAt(Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.Root).Data.ID);
 
 
                 return View(selected);
@@ -83,7 +83,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
               
 
                 int quantity = Convert.ToInt32(collection["OrderedQuantity"]);
-                selected = Singleton.Instance.DrugsList.ElementAt(Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.Head).Value.ID);
+                selected = Singleton.Instance.DrugsList.ElementAt(Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.Root).Data.ID);
                 selected.OrderedQuantity = quantity;
 
                 if ((selected.OrderedQuantity <= selected.Stock)&& quantity != 0)
@@ -284,7 +284,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
 
         public ActionResult Getpreorder()
         {
-            preorder(Singleton.Instance.Drugindex.Head);
+            preorder(Singleton.Instance.Drugindex.Root);
             return File(Encoding.UTF8.GetBytes(preorderinfo), "text/csv", "PreOrder.txt");
 
         }
@@ -292,14 +292,14 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
         {
 
 
-            inorder(Singleton.Instance.Drugindex.Head);
+            inorder(Singleton.Instance.Drugindex.Root);
             return File(Encoding.UTF8.GetBytes(inorderinfo), "text/csv", "InOrder.txt");
 
         }
         public ActionResult Getpostorder()
         {
 
-            postorder(Singleton.Instance.Drugindex.Head);
+            postorder(Singleton.Instance.Drugindex.Root);
             return File(Encoding.UTF8.GetBytes(posorderinfo), "text/csv", "PostOrder.txt");
 
         }
@@ -348,7 +348,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
             {
 
 
-                preorderinfo += "Index: " + parentt.Value.ID + " product: " + parentt.Value.Name + "\n";
+                preorderinfo += "Index: " + parentt.Data.ID + " product: " + parentt.Data.Name + "\n";
                 preorder(parentt.Left);
                 preorder(parentt.Right);
             }
@@ -360,7 +360,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
             if (parentt != null)
             {
                 inorder(parentt.Left);
-                inorderinfo += "Index: " + parentt.Value.ID + " product: " + parentt.Value.Name + "\n";
+                inorderinfo += "Index: " + parentt.Data.ID + " product: " + parentt.Data.Name + "\n";
                 inorder(parentt.Right);
             }
 
@@ -373,7 +373,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
                 postorder(parentt.Left);
                 postorder(parentt.Right);
 
-                posorderinfo += "Index: " + parentt.Value.ID + " product: " + parentt.Value.Name + "\n";
+                posorderinfo += "Index: " + parentt.Data.ID + " product: " + parentt.Data.Name + "\n";
 
             }
 
