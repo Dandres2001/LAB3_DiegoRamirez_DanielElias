@@ -11,7 +11,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Models.Data
         private readonly static Singleton _instance = new Singleton();
         public Manual_List<Drug> DrugsList;
 
-        public AVLTree<Drug> Drugindex;
+        public Binarytree<Drug> Drugindex;
 
 
         public Manual_List<Drug> OrderedDrugs;
@@ -22,7 +22,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Models.Data
             
             DrugsList = new Manual_List<Drug>();
 
-            Drugindex = new AVLTree<Drug>();
+            Drugindex = new Binarytree<Drug>();
 
             OrderedDrugs = new Manual_List<Drug>();
 
