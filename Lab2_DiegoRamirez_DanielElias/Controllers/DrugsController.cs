@@ -46,26 +46,29 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
             try
             {
                 Drug selected;
-
-
+            
+              
             var newDrug3 = new Models.Drug();
+                var newDrug4 = new Models.Drug();
+                newDrug3.Name = search;
 
-            newDrug3.Name = search;
+                newDrug4.ID = Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.Root).Data.ID;
+                if (newDrug4!= null){
+                    selected = Singleton.Instance.DrugsList.ElementAt(newDrug4.ID);
 
-                selected = Singleton.Instance.DrugsList.ElementAt(Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.Root).Data.ID);
-
-
-                return View(selected);
-
+                    return View(selected);
+                }
+            
+              
             }
             
             
             catch
             {
-
+         
             }
-            return null;
 
+            return null;
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -237,7 +240,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
                             object obj = newDrug2;
 
                             Singleton.Instance.DrugsList.AddLast(newDrug);
-                            Singleton.Instance.Drugindex.Add(newDrug2);
+                            Singleton.Instance.Drugindex.AddTo(newDrug2, Singleton.Instance.Drugindex.Root);
 
 
                         }
@@ -272,7 +275,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
                     newDrug.ID = Singleton.Instance.DrugsList.ElementAt(i).ID-1;
                     newDrug.Name = Singleton.Instance.DrugsList.ElementAt(i).Name;
                     drug.Stock = random.Next(1, 15);
-                    Singleton.Instance.Drugindex.Add(newDrug);
+                    Singleton.Instance.Drugindex.AddTo(newDrug, Singleton.Instance.Drugindex.Root);
                     Restocked();
                 }
 

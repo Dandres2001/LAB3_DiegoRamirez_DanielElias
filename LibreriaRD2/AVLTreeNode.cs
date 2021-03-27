@@ -7,7 +7,7 @@ namespace LibreriaRD2
 
     public class AVLTreeNode<T> where T : IComparable
     {
- 
+
 
 
         private AVLTreeNode<T> _left;
@@ -21,7 +21,7 @@ namespace LibreriaRD2
             _tree = tree;
         }
 
-    
+
         public T Data { get; set; }
 
         public AVLTreeNode<T> Left
@@ -57,7 +57,7 @@ namespace LibreriaRD2
 
         internal void Balance()
         {
-            if (State == TreeState.RightHeavy)
+            if (State == BalanceState.RightHeavy)
             {
                 if (Right != null && Right.BalanceFactor < 0)
                 {
@@ -69,7 +69,7 @@ namespace LibreriaRD2
                     LeftRotation();
                 }
             }
-            else if (State == TreeState.LeftHeavy)
+            else if (State == BalanceState.LeftHeavy)
             {
                 if (Left != null && Left.BalanceFactor > 0)
                 {
@@ -78,7 +78,7 @@ namespace LibreriaRD2
                 }
                 else
                 {
-                    RightRotation();
+                    RotatetoRight();
 
 
                 }
@@ -113,7 +113,7 @@ namespace LibreriaRD2
                 rootParent.Right = temp;
             }
         }
-        private void RightRotation()
+        private void RotatetoRight()
         {
             AVLTreeNode<T> rootParent = Parent;
             AVLTreeNode<T> root = this;
@@ -144,13 +144,13 @@ namespace LibreriaRD2
         }
         private void LeftRightRotation()
         {
-            Right.RightRotation();
+            Right.RotatetoRight();
             LeftRotation();
         }
         private void RightLeftRotation()
         {
             Left.LeftRotation();
-            RightRotation();
+            RotatetoRight();
         }
         private int MaxHeight(AVLTreeNode<T> node)
         {
@@ -162,21 +162,22 @@ namespace LibreriaRD2
         }
         private int LeftHeight { get { return MaxHeight(Left); } }
         private int RightHeight { get { return MaxHeight(Right); } }
-        public TreeState State
+        public BalanceState State
         {
             get
             {
                 if (LeftHeight - RightHeight > 1)
                 {
-                    return TreeState.LeftHeavy;
+
+                    return BalanceState.LeftHeavy;
                 }
 
                 if (RightHeight - LeftHeight > 1)
                 {
-                    return TreeState.RightHeavy;
+                    return BalanceState.RightHeavy;
                 }
 
-                return TreeState.Balanced;
+                return BalanceState.Balanced;
             }
         }
         private int BalanceFactor
