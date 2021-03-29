@@ -10,15 +10,15 @@ namespace LibreriaRD2
 
 
 
-        private AVLTreeNode<T> _left;
-        private AVLTreeNode<T> _right;
-        internal AVLTree<T> _tree;
+        private AVLTreeNode<T> left;
+        private AVLTreeNode<T> right;
+        internal AVLTree<T> Tree;
 
         public AVLTreeNode(T value, AVLTreeNode<T> parent, AVLTree<T> tree)
         {
             Data = value;
             Parent = parent;
-            _tree = tree;
+            Tree = tree;
         }
 
 
@@ -26,34 +26,31 @@ namespace LibreriaRD2
 
         public AVLTreeNode<T> Left
         {
-            get { return _left; }
+            get { return left; }
             set
             {
-                _left = value;
-                if (_left != null)
+                left = value;
+                if (left != null)
                 {
-                    _left.Parent = this;
+                    left.Parent = this;
                 }
             }
         }
         public AVLTreeNode<T> Right
         {
-            get { return _right; }
+            get { return right; }
             set
             {
-                _right = value;
-                if (_right != null)
+                right = value;
+                if (right != null)
                 {
-                    _right.Parent = this;
+                    right.Parent = this;
                 }
             }
         }
         public AVLTreeNode<T> Parent { get; set; }
 
-        public int CompareTo(T other)
-        {
-            return Data.CompareTo(other);
-        }
+     
 
         internal void Balance()
         {
@@ -100,9 +97,9 @@ namespace LibreriaRD2
             if (root.Right != null)
                 root.Right.Parent = root;
 
-            if (_tree.Root == root)
+            if (Tree.Root == root)
             {
-                _tree.Root = temp;
+                Tree.Root = temp;
             }
             else if (isLeftChild)
             {
@@ -129,9 +126,9 @@ namespace LibreriaRD2
             if (root.Left != null)
                 root.Left.Parent = root;
 
-            if (_tree.Root == root)
+            if (Tree.Root == root)
             {
-                _tree.Root = temp;
+                Tree.Root = temp;
             }
             else if (isLeftChild)
             {

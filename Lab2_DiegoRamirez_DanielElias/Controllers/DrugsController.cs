@@ -50,16 +50,25 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
               
             var newDrug3 = new Models.Drug();
                 var newDrug4 = new Models.Drug();
+                var newDrug5 = new Models.Drug();
                 newDrug3.Name = search;
+                newDrug5.ID = -1; 
+                newDrug4.ID = Singleton.Instance.Drugindex.find(newDrug3,newDrug5,Singleton.Instance.Drugindex.Root).Data.ID;
 
-                newDrug4.ID = Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.Root).Data.ID;
-                if (newDrug4!= null){
+                if (newDrug4.ID != -1)
+                {
                     selected = Singleton.Instance.DrugsList.ElementAt(newDrug4.ID);
-
                     return View(selected);
+
                 }
-            
-              
+                else
+                {
+                    DrugNotFound();
+                   
+                }
+
+
+
             }
             
             
@@ -67,15 +76,15 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
             {
          
             }
-
-            return null;
+            return RedirectToAction(nameof(Index));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddToOrder( IFormCollection collection)
         {
             var newDrug3 = new Models.Drug();
-
+            var newDrug5 = new Models.Drug();
+            newDrug5.ID = -1;
             newDrug3.Name = search;
 
          
@@ -86,7 +95,7 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
               
 
                 int quantity = Convert.ToInt32(collection["OrderedQuantity"]);
-                selected = Singleton.Instance.DrugsList.ElementAt(Singleton.Instance.Drugindex.find(newDrug3, Singleton.Instance.Drugindex.Root).Data.ID);
+                selected = Singleton.Instance.DrugsList.ElementAt(Singleton.Instance.Drugindex.find(newDrug3,newDrug5, Singleton.Instance.Drugindex.Root).Data.ID);
                 selected.OrderedQuantity = quantity;
 
                 if ((selected.OrderedQuantity <= selected.Stock)&& quantity != 0)
@@ -117,6 +126,11 @@ namespace Lab2_DiegoRamirez_DanielElias.Controllers
         public ActionResult OutOfStockMessage()
         {
             TempData["alertMessage"] = "OUT OF STOCK!";
+            return View();
+        }
+        public ActionResult DrugNotFound()
+        {
+            TempData["alertMessage"] = "Drug  not found!";
             return View();
         }
         public ActionResult csvok()

@@ -11,7 +11,7 @@ namespace LibreriaRD2
         private Node<T> head;
         private Node<T> tail;
         private Node<T> current;
-        private Node<T> pretemp;
+     
         public int Length { get; private set; }
 
         public Manual_List()
@@ -39,24 +39,7 @@ namespace LibreriaRD2
             }
         }
 
-        public void RemoveLast()
-        {
-            if (head != null)
-            {
-                if (this.Length == 1)
-                {
-                    this.head = null;
-                    this.tail = null;
-                    this.Length--;
-                }
-                else
-                {
-                    this.tail.Previous.Next = null;
-                    this.tail = this.tail.Previous;
-                    this.Length--;
-                }
-            }
-        }
+ 
         public bool Remove(int pos)
         {
             int XD = 0;
@@ -93,18 +76,6 @@ namespace LibreriaRD2
 
 
 
-        public override string ToString()
-        {
-            StringBuilder result = new StringBuilder();
-            result.Append("[").Append(this.Length).Append("] ");
-
-            for (Node<T> link = this.head; link != null; link = link.Next)
-            {
-                result.Append(":").Append(link.Data.ToString()).Append(":");
-            }
-
-            return result.ToString();
-        }
 
         private Manual_List<T>.LinkedListEnumerator GetEnumerator()
         {
